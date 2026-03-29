@@ -1,0 +1,37 @@
+<tr id="loan-row-{{ loan.id }}"
+    class="{{ 'table-danger' if loan.status == 'overdue' else 'table-success' if loan.status == 'returned' else '' }}">
+  <td>{{ loan.book.title }}</td>
+  <td>{{ loan.member.name }}</td>
+  <td>{{ loan.borrow_date.strftime('%Y-%m-%d') }}</td>
+  <td>{{ loan.due_date.strftime('%Y-%m-%d') }}</td>
+  <td>{{ loan.return_date.strftime('%Y-%m-%d') if loan.return_date else '—' }}</td>
+  <td>
+    <span class="badge
+      {{ 'bg-success' if loan.status == 'returned'
+         else 'bg-danger' if loan.status == 'overdue'
+         else 'bg-primary' }}">
+      {{ loan.status | capitalize }}
+    </span>
+  </td>
+  <td>
+    {% if loan.status != 'returned' %}
+    <button
+      hx-post="{{ url_for('loans.return_book', id=loan.id) }}"
+      hx-target="#loan-row-{{ loan.id }}"
+      hx-swap="outerHTML"
+      hx-confirm="Mark this book as returned?"
+      class="btn btn-sm btn-success">
+      Return
+    </button>
+    {% endif %}
+
+    <button
+      hx-delete="{{ url_for('loans.delete', id=loan.id) }}"
+      hx-target="#loan-row-{{ loan.id }}"
+      hx-swap="outerHTML swap:0.3s"
+      hx-confirm="Delete this loan record?"
+      class="btn btn-sm btn-danger">
+      Delete
+    </button>
+  </td>
+</tr>

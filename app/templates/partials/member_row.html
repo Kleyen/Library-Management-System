@@ -1,0 +1,29 @@
+<tr id="member-row-{{ member.id }}">
+  <td>{{ member.student_id }}</td>
+  <td>{{ member.name }}</td>
+  <td>{{ member.email }}</td>
+  <td>{{ member.phone }}</td>
+  <td>
+    <a href="{{ url_for('members.detail', id=member.id) }}"
+       class="btn btn-sm btn-info">
+      View
+    </a>
+
+    <button
+      hx-get="{{ url_for('members.edit', id=member.id) }}"
+      hx-target="#member-row-{{ member.id }}"
+      hx-swap="outerHTML"
+      class="btn btn-sm btn-warning">
+      Edit
+    </button>
+
+    <button
+      hx-delete="{{ url_for('members.delete', id=member.id) }}"
+      hx-target="#member-row-{{ member.id }}"
+      hx-swap="outerHTML swap:0.3s"
+      hx-confirm="Are you sure you want to delete this member?"
+      class="btn btn-sm btn-danger">
+      Delete
+    </button>
+  </td>
+</tr>
