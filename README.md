@@ -166,4 +166,4 @@ See [requirements.txt](requirements.txt) for the full list of dependencies.
 
 ## License
 
-This project is for educational purposes.
+This is a personal project.
