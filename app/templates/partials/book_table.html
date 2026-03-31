@@ -1,0 +1,31 @@
+{% for book in books %}
+<tr id="book-row-{{ book.id }}">
+  <td>{{ book.title }}</td>
+  <td>{{ book.author }}</td>
+  <td>{{ book.isbn }}</td>
+  <td>{{ book.genre or '—' }}</td>
+  <td>{{ book.published_year or '—' }}</td>
+  <td>{{ book.quantity }}</td>
+  <td>
+    <span class="badge bg-{{ 'success' if book.is_available else 'danger' }}">
+      {{ book.available_copies }}
+    </span>
+  </td>
+  <td>
+    <a href="{{ url_for('books.detail', id=book.id) }}" class="btn btn-sm btn-info">
+      <i class="bi bi-eye"></i>
+    </a>
+    <a href="{{ url_for('books.edit', id=book.id) }}" class="btn btn-sm btn-warning">
+      <i class="bi bi-pencil"></i>
+    </a>
+    <form action="{{ url_for('books.delete', id=book.id) }}" method="POST" class="d-inline"
+          onsubmit="return confirm('Delete this book?')">
+      <button type="submit" class="btn btn-sm btn-danger">
+        <i class="bi bi-trash"></i>
+      </button>
+    </form>
+  </td>
+</tr>
+{% else %}
+<tr><td colspan="8" class="text-center text-muted">No books found.</td></tr>
+{% endfor %}
