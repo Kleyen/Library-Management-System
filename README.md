@@ -87,7 +87,7 @@ Library-Management-System/
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/Library-Management-System.git
+git clone https://github.com/Kleyen/Library-Management-System.git
 cd Library-Management-System
 
 # Create and activate a virtual environment
