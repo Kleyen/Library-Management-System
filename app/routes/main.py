@@ -8,11 +8,19 @@ main = Blueprint('main', __name__)
 
 @main.route('/')
 def dashboard():
-    total_books   = Book.query.count()
-    total_members = Member.query.count()
-    active_loans  = Loan.query.filter_by(status='active').count()
-    overdue_loans = Loan.query.filter_by(status='overdue').count()
-    recent_loans  = Loan.query.order_by(Loan.borrow_date.desc()).limit(5).all()
+    try:
+        total_books   = Book.query.count()
+        total_members = Member.query.count()
+        active_loans  = Loan.query.filter_by(status='active').count()
+        overdue_loans = Loan.query.filter_by(status='overdue').count()
+        recent_loans  = Loan.query.order_by(
+                            Loan.borrow_date.desc()).limit(5).all()
+    except Exception:
+        total_books   = 0
+        total_members = 0
+        active_loans  = 0
+        overdue_loans = 0
+        recent_loans  = []
 
     return render_template('dashboard.html',
         total_books=total_books,

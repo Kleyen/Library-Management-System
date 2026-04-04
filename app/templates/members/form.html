@@ -1,54 +1,61 @@
 {% extends 'base.html' %}
-{% block title %}{{ title }}{% endblock %}
+{% block title %}{{ title }} — LibraryMS{% endblock %}
 
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-4">
-  <h2>{{ title }}</h2>
+  <h2 class="mb-0">{{ title }}</h2>
   <a href="{{ url_for('members.index') }}" class="btn btn-secondary">
-    <i class="bi bi-arrow-left"></i> Back
+    <i class="bi bi-arrow-left me-1"></i>Back
   </a>
 </div>
 
-<div class="card" style="max-width: 600px;">
+<div class="card" style="max-width:560px;">
   <div class="card-body">
-    <form method="POST">
+    <form method="POST" novalidate>
       {{ form.hidden_tag() }}
 
       <div class="mb-3">
-        {{ form.student_id.label(class='form-label') }}
-        {{ form.student_id(class='form-control') }}
-        {% for error in form.student_id.errors %}
-          <div class="text-danger small">{{ error }}</div>
+        {{ form.student_id.label(class='form-label fw-semibold') }}
+        {{ form.student_id(class='form-control' + (' is-invalid' if form.student_id.errors else '')) }}
+        {% for e in form.student_id.errors %}
+          <div class="invalid-feedback">{{ e }}</div>
         {% endfor %}
       </div>
 
       <div class="mb-3">
-        {{ form.full_name.label(class='form-label') }}
-        {{ form.full_name(class='form-control') }}
-        {% for error in form.full_name.errors %}
-          <div class="text-danger small">{{ error }}</div>
+        {{ form.full_name.label(class='form-label fw-semibold') }}
+        {{ form.full_name(class='form-control' + (' is-invalid' if form.full_name.errors else '')) }}
+        {% for e in form.full_name.errors %}
+          <div class="invalid-feedback">{{ e }}</div>
         {% endfor %}
       </div>
 
       <div class="mb-3">
-        {{ form.email.label(class='form-label') }}
-        {{ form.email(class='form-control') }}
-        {% for error in form.email.errors %}
-          <div class="text-danger small">{{ error }}</div>
+        {{ form.email.label(class='form-label fw-semibold') }}
+        {{ form.email(class='form-control' + (' is-invalid' if form.email.errors else '')) }}
+        {% for e in form.email.errors %}
+          <div class="invalid-feedback">{{ e }}</div>
         {% endfor %}
       </div>
 
       <div class="mb-3">
-        {{ form.phone.label(class='form-label') }}
+        {{ form.phone.label(class='form-label fw-semibold') }}
         {{ form.phone(class='form-control') }}
       </div>
 
       <div class="mb-3">
-        {{ form.program.label(class='form-label') }}
+        {{ form.program.label(class='form-label fw-semibold') }}
         {{ form.program(class='form-control') }}
       </div>
 
-      <button type="submit" class="btn btn-primary">Save</button>
+      <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-primary">
+          <i class="bi bi-save me-1"></i>Save
+        </button>
+        <a href="{{ url_for('members.index') }}" class="btn btn-outline-secondary">
+          Cancel
+        </a>
+      </div>
     </form>
   </div>
 </div>

@@ -1,72 +1,92 @@
 {% extends 'base.html' %}
-{% block title %}{{ member.full_name }}{% endblock %}
+{% block title %}{{ member.full_name }} — LibraryMS{% endblock %}
 
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-4">
-  <h2>{{ member.full_name }}</h2>
-  <div>
+  <h2 class="mb-0">{{ member.full_name }}</h2>
+  <div class="d-flex gap-2">
     <a href="{{ url_for('members.edit', id=member.id) }}" class="btn btn-warning">
-      <i class="bi bi-pencil"></i> Edit
+      <i class="bi bi-pencil me-1"></i>Edit
     </a>
     <a href="{{ url_for('members.index') }}" class="btn btn-secondary">
-      <i class="bi bi-arrow-left"></i> Back
+      <i class="bi bi-arrow-left me-1"></i>Back
     </a>
   </div>
 </div>
 
-<div class="row">
+<div class="row g-4">
+  <!-- Member info -->
   <div class="col-md-4">
-    <div class="card mb-4">
+    <div class="card h-100">
       <div class="card-header"><h5 class="mb-0">Member Details</h5></div>
       <div class="card-body">
-        <table class="table table-borderless mb-0">
-          <tr><th>Student ID</th><td>{{ member.student_id }}</td></tr>
-          <tr><th>Email</th><td>{{ member.email }}</td></tr>
-          <tr><th>Phone</th><td>{{ member.phone or '—' }}</td></tr>
-          <tr><th>Program</th><td>{{ member.program or '—' }}</td></tr>
-          <tr>
-            <th>Status</th>
-            <td>
-              <span class="badge bg-{{ 'danger' if member.has_overdue else 'success' }}">
-                {{ 'Has Overdue' if member.has_overdue else 'Good Standing' }}
-              </span>
-            </td>
-          </tr>
-        </table>
+        <dl class="row mb-0">
+          <dt class="col-5">Student ID</dt>
+          <dd class="col-7">{{ member.student_id }}</dd>
+
+          <dt class="col-5">Email</dt>
+          <dd class="col-7" style="word-break:break-all;">{{ member.email }}</dd>
+
+          <dt class="col-5">Phone</dt>
+          <dd class="col-7">{{ member.phone or '—' }}</dd>
+
+          <dt class="col-5">Program</dt>
+          <dd class="col-7">{{ member.program or '—' }}</dd>
+
+          <dt class="col-5">Standing</dt>
+          <dd class="col-7">
+            <span class="badge bg-{{ 'danger' if member.has_overdue else 'success' }}">
+              {{ 'Has Overdue' if member.has_overdue else 'Good Standing' }}
+            </span>
+          </dd>
+
+          <dt class="col-5">Active Loans</dt>
+          <dd class="col-7">{{ member.active_loans | length }}</dd>
+        </dl>
       </div>
     </div>
   </div>
 
+  <!-- Loan history -->
   <div class="col-md-8">
-    <div class="card">
+    <div class="card h-100">
       <div class="card-header"><h5 class="mb-0">Loan History</h5></div>
       <div class="card-body p-0">
-        <table class="table table-hover mb-0">
-          <thead class="table-light">
-            <tr>
-              <th>Book</th>
-              <th>Borrow Date</th>
-              <th>Due Date</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for loan in member.loans %}
-            <tr>
-              <td>{{ loan.book.title }}</td>
-              <td>{{ loan.borrow_date.strftime('%Y-%m-%d') }}</td>
-              <td>{{ loan.due_date.strftime('%Y-%m-%d') }}</td>
-              <td>
-                <span class="badge bg-{{ 'success' if loan.status == 'returned' else 'danger' if loan.status == 'overdue' else 'primary' }}">
-                  {{ loan.status | capitalize }}
-                </span>
-              </td>
-            </tr>
-            {% else %}
-            <tr><td colspan="4" class="text-center text-muted">No loan history.</td></tr>
-            {% endfor %}
-          </tbody>
-        </table>
+        <div class="table-responsive">
+          <table class="table table-hover mb-0">
+            <thead class="table-light">
+              <tr>
+                <th>Book</th>
+                <th>Borrow Date</th>
+                <th>Due Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for loan in member.loans | sort(attribute='borrow_date', reverse=True) %}
+              <tr>
+                <td>{{ loan.book.title }}</td>
+                <td>{{ loan.borrow_date.strftime('%Y-%m-%d') }}</td>
+                <td>{{ loan.due_date.strftime('%Y-%m-%d') }}</td>
+                <td>
+                  <span class="badge bg-{{
+                    'success' if loan.status == 'returned' else
+                    'danger'  if loan.status == 'overdue'  else
+                    'primary' }}">
+                    {{ loan.status | capitalize }}
+                  </span>
+                </td>
+              </tr>
+              {% else %}
+              <tr>
+                <td colspan="4" class="text-center text-muted py-3">
+                  No loan history.
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>

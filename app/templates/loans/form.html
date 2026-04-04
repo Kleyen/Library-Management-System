@@ -1,44 +1,52 @@
 {% extends 'base.html' %}
-{% block title %}{{ title }}{% endblock %}
+{% block title %}{{ title }} — LibraryMS{% endblock %}
 
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-4">
-  <h2>{{ title }}</h2>
+  <h2 class="mb-0">{{ title }}</h2>
   <a href="{{ url_for('loans.index') }}" class="btn btn-secondary">
-    <i class="bi bi-arrow-left"></i> Back
+    <i class="bi bi-arrow-left me-1"></i>Back
   </a>
 </div>
 
-<div class="card" style="max-width: 600px;">
+<div class="card" style="max-width:560px;">
   <div class="card-body">
-    <form method="POST">
+    <form method="POST" novalidate>
       {{ form.hidden_tag() }}
 
       <div class="mb-3">
-        {{ form.book_id.label(class='form-label') }}
-        {{ form.book_id(class='form-select') }}
-        {% for error in form.book_id.errors %}
-          <div class="text-danger small">{{ error }}</div>
+        {{ form.book_id.label(class='form-label fw-semibold') }}
+        {{ form.book_id(class='form-select' + (' is-invalid' if form.book_id.errors else '')) }}
+        {% for e in form.book_id.errors %}
+          <div class="invalid-feedback">{{ e }}</div>
         {% endfor %}
       </div>
 
       <div class="mb-3">
-        {{ form.member_id.label(class='form-label') }}
-        {{ form.member_id(class='form-select') }}
-        {% for error in form.member_id.errors %}
-          <div class="text-danger small">{{ error }}</div>
+        {{ form.member_id.label(class='form-label fw-semibold') }}
+        {{ form.member_id(class='form-select' + (' is-invalid' if form.member_id.errors else '')) }}
+        {% for e in form.member_id.errors %}
+          <div class="invalid-feedback">{{ e }}</div>
         {% endfor %}
       </div>
 
       <div class="mb-3">
-        {{ form.due_date.label(class='form-label') }}
-        {{ form.due_date(class='form-control') }}
-        {% for error in form.due_date.errors %}
-          <div class="text-danger small">{{ error }}</div>
+        {{ form.due_date.label(class='form-label fw-semibold') }}
+        {{ form.due_date(class='form-control' + (' is-invalid' if form.due_date.errors else ''), type='date') }}
+        <div class="form-text">Must be a future date.</div>
+        {% for e in form.due_date.errors %}
+          <div class="invalid-feedback">{{ e }}</div>
         {% endfor %}
       </div>
 
-      <button type="submit" class="btn btn-primary">Save</button>
+      <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-primary">
+          <i class="bi bi-save me-1"></i>Save
+        </button>
+        <a href="{{ url_for('loans.index') }}" class="btn btn-outline-secondary">
+          Cancel
+        </a>
+      </div>
     </form>
   </div>
 </div>

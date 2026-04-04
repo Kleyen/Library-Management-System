@@ -1,5 +1,5 @@
 {% for book in books %}
-<tr id="book-row-{{ book.id }}">
+<tr>
   <td>{{ book.title }}</td>
   <td>{{ book.author }}</td>
   <td>{{ book.isbn }}</td>
@@ -12,20 +12,25 @@
     </span>
   </td>
   <td>
-    <a href="{{ url_for('books.detail', id=book.id) }}" class="btn btn-sm btn-info">
+    <a href="{{ url_for('books.detail', id=book.id) }}"
+       class="btn btn-sm btn-info" title="View">
       <i class="bi bi-eye"></i>
     </a>
-    <a href="{{ url_for('books.edit', id=book.id) }}" class="btn btn-sm btn-warning">
+    <a href="{{ url_for('books.edit', id=book.id) }}"
+       class="btn btn-sm btn-warning" title="Edit">
       <i class="bi bi-pencil"></i>
     </a>
-    <form action="{{ url_for('books.delete', id=book.id) }}" method="POST" class="d-inline"
-          onsubmit="return confirm('Delete this book?')">
-      <button type="submit" class="btn btn-sm btn-danger">
+    <form action="{{ url_for('books.delete', id=book.id) }}"
+          method="POST" class="d-inline"
+          onsubmit="return confirm('Delete \'{{ book.title }}\'?')">
+      <button type="submit" class="btn btn-sm btn-danger" title="Delete">
         <i class="bi bi-trash"></i>
       </button>
     </form>
   </td>
 </tr>
 {% else %}
-<tr><td colspan="8" class="text-center text-muted">No books found.</td></tr>
+<tr>
+  <td colspan="8" class="text-center text-muted py-3">No books found.</td>
+</tr>
 {% endfor %}

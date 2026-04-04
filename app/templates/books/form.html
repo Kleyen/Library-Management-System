@@ -1,63 +1,73 @@
 {% extends 'base.html' %}
-{% block title %}{{ title }}{% endblock %}
+{% block title %}{{ title }} — LibraryMS{% endblock %}
 
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-4">
-  <h2>{{ title }}</h2>
+  <h2 class="mb-0">{{ title }}</h2>
   <a href="{{ url_for('books.index') }}" class="btn btn-secondary">
-    <i class="bi bi-arrow-left"></i> Back
+    <i class="bi bi-arrow-left me-1"></i>Back
   </a>
 </div>
 
-<div class="card" style="max-width: 600px;">
+<div class="card" style="max-width:560px;">
   <div class="card-body">
-    <form method="POST">
+    <form method="POST" novalidate>
       {{ form.hidden_tag() }}
 
       <div class="mb-3">
-        {{ form.title.label(class='form-label') }}
-        {{ form.title(class='form-control') }}
-        {% for error in form.title.errors %}
-          <div class="text-danger small">{{ error }}</div>
+        {{ form.title.label(class='form-label fw-semibold') }}
+        {{ form.title(class='form-control' + (' is-invalid' if form.title.errors else '')) }}
+        {% for e in form.title.errors %}
+          <div class="invalid-feedback">{{ e }}</div>
         {% endfor %}
       </div>
 
       <div class="mb-3">
-        {{ form.author.label(class='form-label') }}
-        {{ form.author(class='form-control') }}
-        {% for error in form.author.errors %}
-          <div class="text-danger small">{{ error }}</div>
+        {{ form.author.label(class='form-label fw-semibold') }}
+        {{ form.author(class='form-control' + (' is-invalid' if form.author.errors else '')) }}
+        {% for e in form.author.errors %}
+          <div class="invalid-feedback">{{ e }}</div>
         {% endfor %}
       </div>
 
       <div class="mb-3">
-        {{ form.isbn.label(class='form-label') }}
-        {{ form.isbn(class='form-control') }}
-        {% for error in form.isbn.errors %}
-          <div class="text-danger small">{{ error }}</div>
+        {{ form.isbn.label(class='form-label fw-semibold') }}
+        {{ form.isbn(class='form-control' + (' is-invalid' if form.isbn.errors else '')) }}
+        {% for e in form.isbn.errors %}
+          <div class="invalid-feedback">{{ e }}</div>
         {% endfor %}
       </div>
 
       <div class="mb-3">
-        {{ form.genre.label(class='form-label') }}
+        {{ form.genre.label(class='form-label fw-semibold') }}
         {{ form.genre(class='form-control') }}
       </div>
 
       <div class="row">
-        <div class="col mb-3">
-          {{ form.published_year.label(class='form-label') }}
-          {{ form.published_year(class='form-control') }}
+        <div class="col-md-6 mb-3">
+          {{ form.published_year.label(class='form-label fw-semibold') }}
+          {{ form.published_year(class='form-control' + (' is-invalid' if form.published_year.errors else '')) }}
+          {% for e in form.published_year.errors %}
+            <div class="invalid-feedback">{{ e }}</div>
+          {% endfor %}
         </div>
-        <div class="col mb-3">
-          {{ form.quantity.label(class='form-label') }}
-          {{ form.quantity(class='form-control') }}
-          {% for error in form.quantity.errors %}
-            <div class="text-danger small">{{ error }}</div>
+        <div class="col-md-6 mb-3">
+          {{ form.quantity.label(class='form-label fw-semibold') }}
+          {{ form.quantity(class='form-control' + (' is-invalid' if form.quantity.errors else '')) }}
+          {% for e in form.quantity.errors %}
+            <div class="invalid-feedback">{{ e }}</div>
           {% endfor %}
         </div>
       </div>
 
-      <button type="submit" class="btn btn-primary">Save</button>
+      <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-primary">
+          <i class="bi bi-save me-1"></i>Save
+        </button>
+        <a href="{{ url_for('books.index') }}" class="btn btn-outline-secondary">
+          Cancel
+        </a>
+      </div>
     </form>
   </div>
 </div>

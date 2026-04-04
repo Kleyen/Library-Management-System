@@ -1,36 +1,45 @@
 {% for loan in loans %}
-<tr id="loan-row-{{ loan.id }}"
-    class="{{ 'table-danger' if loan.status == 'overdue' else 'table-success' if loan.status == 'returned' else '' }}">
+<tr class="{{
+  'table-danger'  if loan.status == 'overdue'   else
+  'table-success' if loan.status == 'returned'  else '' }}">
   <td>{{ loan.book.title }}</td>
   <td>{{ loan.member.full_name }}</td>
   <td>{{ loan.borrow_date.strftime('%Y-%m-%d') }}</td>
   <td>{{ loan.due_date.strftime('%Y-%m-%d') }}</td>
   <td>{{ loan.return_date.strftime('%Y-%m-%d') if loan.return_date else '—' }}</td>
   <td>
-    <span class="badge bg-{{ 'success' if loan.status == 'returned' else 'danger' if loan.status == 'overdue' else 'primary' }}">
+    <span class="badge bg-{{
+      'success' if loan.status == 'returned' else
+      'danger'  if loan.status == 'overdue'  else
+      'primary' }}">
       {{ loan.status | capitalize }}
     </span>
   </td>
   <td>
-    <a href="{{ url_for('loans.detail', id=loan.id) }}" class="btn btn-sm btn-info">
+    <a href="{{ url_for('loans.detail', id=loan.id) }}"
+       class="btn btn-sm btn-info" title="View">
       <i class="bi bi-eye"></i>
     </a>
     {% if loan.status != 'returned' %}
-    <form action="{{ url_for('loans.return_book', id=loan.id) }}" method="POST" class="d-inline"
-          onsubmit="return confirm('Mark as returned?')">
-      <button type="submit" class="btn btn-sm btn-success">
-        <i class="bi bi-check"></i> Return
+    <form action="{{ url_for('loans.return_book', id=loan.id) }}"
+          method="POST" class="d-inline"
+          onsubmit="return confirm('Mark this book as returned?')">
+      <button type="submit" class="btn btn-sm btn-success" title="Return">
+        <i class="bi bi-check-lg"></i> Return
       </button>
     </form>
     {% endif %}
-    <form action="{{ url_for('loans.delete', id=loan.id) }}" method="POST" class="d-inline"
-          onsubmit="return confirm('Delete this loan?')">
-      <button type="submit" class="btn btn-sm btn-danger">
+    <form action="{{ url_for('loans.delete', id=loan.id) }}"
+          method="POST" class="d-inline"
+          onsubmit="return confirm('Delete this loan record?')">
+      <button type="submit" class="btn btn-sm btn-danger" title="Delete">
         <i class="bi bi-trash"></i>
       </button>
     </form>
   </td>
 </tr>
 {% else %}
-<tr><td colspan="7" class="text-center text-muted">No loans found.</td></tr>
+<tr>
+  <td colspan="7" class="text-center text-muted py-3">No loans found.</td>
+</tr>
 {% endfor %}
