@@ -161,9 +161,3 @@ Loan status can be: `active`, `returned`, or `overdue`
 ## Requirements
 
 See [requirements.txt](requirements.txt) for the full list of dependencies.
-
----
-
-## License
-
-This is a personal project.
